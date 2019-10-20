@@ -1,4 +1,8 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+
+/* логин */
 
 /* Возвращает всех пользователей */
 module.exports.getAllUsers = (req, res) => {
@@ -13,27 +17,51 @@ module.exports.getUser = (req, res) => {
 		.then((user) => {
 			if (!user) { res.status(404).send({ message: "Нет пользователя с таким id" }); } else res.send({ data: user });
 		})
-	/* Странно, что, если id короче 25, то ошибку обрабатывает catch. А если 25 символов, то then. */
 		.catch((err, user) => {
 			if (!user) { res.status(404).send({ message: "Нет пользователя с таким id" }); } else res.status(500).send({ message: `Возникла ошибка ${err.message}` });
-		}); /* Добавлена обработка ошибки при запросе несуществующего пользователя */
+		});
 };
 
 /* Создаёт пользователя */
 module.exports.createUser = (req, res) => {
-	const { name, about, avatar } = req.body;
-
-	User.create({ name, about, avatar })
-		.then((user) => res.send({ data: user }))
-		.catch((err) => res.status(500).send({ message: `Возникла ошибка ${err.message}` }));
+	bcrypt.hash(req.body.password, 10)
+		.then((hash) => User.create({
+			name: req.body.name,
+			about: req.body.about,
+			avatar: req.body.avatar,
+			email: req.body.email,
+			password: hash,
+		}))
+		.then((user) => res.send(user))
+		.catch((err) => res.status(400).send({ message: `Возникла ошибка ${err.message}` }));
 };
+
+/* Аутентификация пользователя */
+module.exports.login = (req, res) => {
+	const { email, password } = req.body;
+	return User.findUserByCredentials(email, password)
+		.then(() => {
+			const token = jwt.sign({ _id: "5daaa6f11fdbf23da8c69662" }, "2fa5a3af71b147c0e696aa8ae458831ab64482d236667469bec82a548e646aeb", { expiresIn: "7d" });
+			res
+				.cookie("jwt", token, {
+					maxAge: 3600000 * 24 * 7,
+					httpOnly: true,
+					sameSite: true,
+				})
+				.end();
+		})
+		.catch(() => {
+			res.status(401).send({ message: "Неправильные почта или пароль" });
+		});
+};
+
 
 /* Обновляет профиль */
 module.exports.renewUser = (req, res) => {
 	const { name, about, avatar } = req.body;
 
 	User.findByIdAndUpdate(
-		req.params.id,
+		req.user._id,
 		{ name, about, avatar },
 		{
 			new: true,
@@ -50,7 +78,7 @@ module.exports.renewUserAvatar = (req, res) => {
 	const { avatar } = req.body;
 
 	User.findByIdAndUpdate(
-		req.params.id,
+		req.user._id,
 		{ avatar },
 		{
 			new: true,

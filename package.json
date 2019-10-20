@@ -1,7 +1,7 @@
 {
-  "name": "be13",
+  "name": "be14",
   "version": "1.0.0",
-  "description": "Yandex.praktikum wed design sprint 13 project",
+  "description": "Yandex.praktikum wed design sprint 14 project",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
@@ -9,11 +9,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rationabilis/be12.git"
+    "url": "git+https://github.com/rationabilis/be14.git"
   },
   "author": "Alex Demin",
   "license": "ISC",
-  "homepage": "https://rationabilis.github.io/be13/",
+  "homepage": "https://rationabilis.github.io/be14/",
   "devDependencies": {
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
@@ -22,15 +22,24 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "nodemon": "^1.19.3",
+    "nodemon": "^1.19.4",
     "path": "^0.12.7",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.1",
+    "webpack-dev-server": "^3.8.2",
     "webpack-md5-hash": "0.0.6"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
-    "mongoose": "^5.7.3"
-  }
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.3",
+    "validator": "^11.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/rationabilis/be14/issues"
+  },
+  "keywords": []
 }

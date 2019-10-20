@@ -1,13 +1,13 @@
 const Card = require("../models/card");
 
-/* Возвращает все карточки */
+/* Вернуть все карточки */
 module.exports.getAllCards = (req, res) => {
 	Card.find({})
 		.then((cards) => res.send({ data: cards }))
 		.catch((err) => res.status(500).send({ message: `Возникла ошибка ${err.message}` }));
 };
 
-/* Создаёт карточку */
+/* Создать карточку */
 module.exports.createCard = (req, res) => {
 	const { name, link } = req.body;
 
@@ -17,10 +17,16 @@ module.exports.createCard = (req, res) => {
 		.catch((err) => res.status(500).send({ message: `Возникла ошибка ${err.message}` }));
 };
 
-/* Удаляет карточку */
+/* Удалить карточку */
 module.exports.deleteCard = (req, res) => {
-	Card.findByIdAndRemove(req.params.cardId) /* Исправлен рутинг */
-		.then((card) => res.send({ data: card }))
+	Card.findById(req.params.cardId)
+		.then((card) => {
+			const cardData = { data: card };
+			if (cardData.data.owner !== req.user._id) { res.status(401).send({ message: "Нет полномочий для удаления карточки" }); } else {
+				Card.findByIdAndRemove(req.params.cardId)
+					.then(() => res.send(cardData));
+			}
+		})
 		.catch((err) => res.status(500).send({ message: `Возникла ошибка ${err.message}` }));
 };
 
