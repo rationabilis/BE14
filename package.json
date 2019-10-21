@@ -1,6 +1,6 @@
 {
   "name": "be14",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Yandex.praktikum wed design sprint 14 project",
   "main": "app.js",
   "scripts": {
@@ -19,9 +19,6 @@
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^1.7.0",
     "nodemon": "^1.19.4",
     "path": "^0.12.7",
     "webpack": "^4.41.2",
@@ -34,6 +31,8 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.0.0",
+    "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.3",
     "validator": "^11.1.0"
